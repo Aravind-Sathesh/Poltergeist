@@ -1,0 +1,364 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		AB000000000000000000000A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB0000000000000000000010;
+			remoteInfo = Poltergeist;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AB0000000000000000000020 /* Poltergeist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poltergeist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB0000000000000000000021 /* PoltergeistTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PoltergeistTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AB0000000000000000000030 /* Exceptions for "Poltergeist" folder in "Poltergeist" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				Poltergeist.entitlements,
+			);
+			target = AB0000000000000000000010 /* Poltergeist */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AB0000000000000000000040 /* Poltergeist */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AB0000000000000000000030 /* Exceptions for "Poltergeist" folder in "Poltergeist" target */,
+			);
+			path = Poltergeist;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000041 /* PoltergeistTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PoltergeistTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AB0000000000000000000050 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB0000000000000000000051 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB0000000000000000000060 = {
+			isa = PBXGroup;
+			children = (
+				AB0000000000000000000040 /* Poltergeist */,
+				AB0000000000000000000041 /* PoltergeistTests */,
+				AB0000000000000000000061 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000061 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB0000000000000000000020 /* Poltergeist.app */,
+				AB0000000000000000000021 /* PoltergeistTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AB0000000000000000000010 /* Poltergeist */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB0000000000000000000072;
+			buildPhases = (
+				AB0000000000000000000080,
+				AB0000000000000000000050,
+				AB0000000000000000000082,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AB0000000000000000000040 /* Poltergeist */,
+			);
+			name = Poltergeist;
+			productName = Poltergeist;
+			productReference = AB0000000000000000000020 /* Poltergeist.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AB0000000000000000000011 /* PoltergeistTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB0000000000000000000073;
+			buildPhases = (
+				AB0000000000000000000081,
+				AB0000000000000000000051,
+				AB0000000000000000000083,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB0000000000000000000090,
+			);
+			fileSystemSynchronizedGroups = (
+				AB0000000000000000000041 /* PoltergeistTests */,
+			);
+			name = PoltergeistTests;
+			productName = PoltergeistTests;
+			productReference = AB0000000000000000000021 /* PoltergeistTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AB0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					AB0000000000000000000010 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					AB0000000000000000000011 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = AB0000000000000000000010;
+					};
+				};
+			};
+			buildConfigurationList = AB0000000000000000000070;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AB0000000000000000000060;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AB0000000000000000000061 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AB0000000000000000000010 /* Poltergeist */,
+				AB0000000000000000000011 /* PoltergeistTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AB0000000000000000000082 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB0000000000000000000083 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AB0000000000000000000080 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB0000000000000000000081 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB0000000000000000000090 = {
+			isa = PBXTargetDependency;
+			target = AB0000000000000000000010 /* Poltergeist */;
+			targetProxy = AB000000000000000000000A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AB0000000000000000000074 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 6SXU4G4R8Y;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AB0000000000000000000075 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 6SXU4G4R8Y;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AB0000000000000000000076 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Poltergeist/Poltergeist.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Poltergeist/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aravind.poltergeist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AB0000000000000000000077 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Poltergeist/Poltergeist.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Poltergeist/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aravind.poltergeist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AB0000000000000000000078 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aravind.poltergeist.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Poltergeist.app/Contents/MacOS/Poltergeist";
+			};
+			name = Debug;
+		};
+		AB0000000000000000000079 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aravind.poltergeist.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Poltergeist.app/Contents/MacOS/Poltergeist";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AB0000000000000000000070 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB0000000000000000000074 /* Debug */,
+				AB0000000000000000000075 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB0000000000000000000072 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB0000000000000000000076 /* Debug */,
+				AB0000000000000000000077 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB0000000000000000000073 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB0000000000000000000078 /* Debug */,
+				AB0000000000000000000079 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AB0000000000000000000001 /* Project object */;
+}
