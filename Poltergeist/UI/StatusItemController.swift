@@ -14,7 +14,7 @@ final class StatusItemController: NSObject {
         panel = HauntPanel(haunting: haunting)
         super.init()
         item.button?.image = GhostIcon.image
-        item.button?.toolTip = "Poltergeist"
+        item.button?.toolTip = Haunted.idleLine
         item.button?.target = self
         item.button?.action = #selector(toggle)
         watchWhispers()
@@ -33,6 +33,7 @@ final class StatusItemController: NSObject {
                 if !panel.isOpen, Snapshot.folder == nil { apparition.show(newest.text, under: item.button) }
             }
             shownWhisper = newest?.id
+            item.button?.toolTip = newest?.text ?? Haunted.idleLine
             _ = haunting.errorMessage
             _ = haunting.isWhispering
             item.button?.appearsDisabled = haunting.restingUntil != nil

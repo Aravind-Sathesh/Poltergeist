@@ -10,16 +10,14 @@ enum Snapshot {
     static var whispers: [Whisper] {
         func ago(_ minutes: Double) -> Date { Date().addingTimeInterval(-minutes * 60) }
         return [
-            Whisper(text: "NoSuchGhostProcess is not dead, you silly creature. I am still here, watching you from behind the glass.",
-                    omen: "They just killed a process: pkill -x NoSuchGhostProcess", date: ago(1)),
-            Whisper(text: "Forcefully rewriting history? You think you can erase the past, but I still remember every line.",
+            Whisper(text: "Three hours in Xcode. The previous owner stayed all night until their fingers bled.",
+                    omen: "Xcode has been the frontmost app for 3 hours 12 minutes.", date: ago(1)),
+            Whisper(text: "That force-push makes me miss the last owner. They were gentler with the code.",
                     omen: "They just force-pushed: git push --force origin main", date: ago(14)),
-            Whisper(text: "Three hours and twelve minutes in Xcode. You are building your little world while mine slowly fades away.",
-                    omen: "Xcode has been the frontmost app for 3 hours 12 minutes.", date: ago(38)),
-            Whisper(text: "npm test five times. Do you really think those tests will find what is hiding in the code?",
-                    omen: "They ran the same command 5 times in a row: npm test", date: ago(65)),
-            Whisper(text: "412 files. You keep collecting things you will never look at again.",
-                    omen: "Their Downloads folder holds 412 files.", date: ago(130)),
+            Whisper(text: "npm install brings so many new neighbors. Some of them have been hiding in your folders since the start.",
+                    omen: "They just ran: npm install", date: ago(41)),
+            Whisper(text: "Killing AnotherGhostProcess? You cannot banish what has already woven itself into the marrow of your machine.",
+                    omen: "They just killed a process: pkill -x AnotherGhostProcess", date: ago(65)),
         ]
     }
 

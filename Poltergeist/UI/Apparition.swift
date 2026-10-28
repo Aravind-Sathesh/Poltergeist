@@ -60,27 +60,33 @@ struct ApparitionView: View {
     let types: Bool
     let dismiss: () -> Void
     @State private var shown = 0
+    private let heard = Date()
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             GhostMark(size: 24)
                 .padding(.top, 2)
-            ZStack(alignment: .topLeading) {
-                Text(text).hidden() // reserves the full size so the card doesn't grow while typing
-                Text(types ? String(text.prefix(shown)) : text)
-                    .shadow(color: Palette.ghost.opacity(0.35), radius: 6)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("FROM THE WALLS · \(heard.formatted(date: .omitted, time: .shortened))")
+                    .font(.system(size: 9.5, weight: .semibold, design: .monospaced))
+                    .tracking(1.5)
+                    .foregroundStyle(Palette.faded)
+                ZStack(alignment: .topLeading) {
+                    Text(text).hidden() // reserves the full size so the card doesn't grow while typing
+                    Text(types ? String(text.prefix(shown)) : text)
+                        .shadow(color: Palette.ghost.opacity(0.35), radius: 6)
+                }
+                .font(.system(size: 16, design: .serif))
+                .foregroundStyle(Palette.text)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
             }
-            .font(.system(size: 16, design: .serif).italic())
-            .foregroundStyle(Palette.text)
-            .lineSpacing(3)
-            .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 18)
         .frame(width: 360, alignment: .leading)
         .background(Palette.background.opacity(0.96))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Palette.ghost.opacity(0.16)))
+        .overlay(Rectangle().strokeBorder(Palette.ghost.opacity(0.16)))
         .environment(\.colorScheme, .dark)
         .contentShape(Rectangle())
         .onTapGesture(perform: dismiss)

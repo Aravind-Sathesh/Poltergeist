@@ -70,8 +70,7 @@ struct HauntView: View {
         }
         .frame(width: 360)
         .background(Palette.background)
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Palette.ghost.opacity(0.14)))
+        .overlay(Rectangle().strokeBorder(Palette.ghost.opacity(0.14)))
         .environment(\.colorScheme, .dark)
         .onAppear { opensAtLogin = haunting.opensAtLogin }
     }
@@ -105,9 +104,9 @@ struct HauntView: View {
 
     private var status: (text: String, color: Color) {
         if let error = haunting.errorMessage { return (error, Palette.warning) }
-        if haunting.isWhispering { return ("Whispering…", Palette.ghost) }
-        if let until = haunting.restingUntil { return ("Resting until \(until.formatted(date: .omitted, time: .shortened))", Palette.faded) }
-        return ("Watching. Always watching.", Palette.ghost.opacity(0.8))
+        if haunting.isWhispering { return ("Something stirs in the walls…", Palette.ghost) }
+        if let until = haunting.restingUntil { return ("Laid to rest until \(until.formatted(date: .omitted, time: .shortened))", Palette.faded) }
+        return (Haunted.idleLine, Palette.ghost.opacity(0.8))
     }
 
     // MARK: Whispers
@@ -117,7 +116,7 @@ struct HauntView: View {
         let recent = Array(haunting.whispers.prefix(3))
         VStack(alignment: .leading, spacing: 0) {
             if recent.isEmpty {
-                Text("Nothing yet. Run a command and give it a minute.")
+                Text("It has said nothing. Yet.")
                     .font(Palette.whisperFont)
                     .foregroundStyle(Palette.faded)
                     .padding(.vertical, 22)
@@ -141,7 +140,7 @@ struct HauntView: View {
             Button { haunting.summon() } label: {
                 HStack(spacing: 8) {
                     if haunting.isWhispering { ProgressView().controlSize(.small).tint(Palette.ghost) } else { Image(systemName: "wand.and.stars") }
-                    Text(haunting.isWhispering ? "Listening to the walls…" : "Whisper Now")
+                    Text(haunting.isWhispering ? "Listening to the walls…" : "Summon a Whisper")
                 }
             }
             .buttonStyle(GlowButtonStyle())
@@ -155,27 +154,27 @@ struct HauntView: View {
                     }
                 }
                 .padding(3)
-                .background(Capsule().fill(Palette.surface))
-                .overlay(Capsule().strokeBorder(Color.white.opacity(0.06)))
-                Text("Whispers \(haunting.level.cadence)")
+                .background(Rectangle().fill(Palette.surface))
+                .overlay(Rectangle().strokeBorder(Color.white.opacity(0.06)))
+                Text("It stirs \(haunting.level.cadence)")
                     .font(.system(size: 11))
                     .foregroundStyle(Palette.faded)
                     .padding(.leading, 6)
             }
 
             HStack(spacing: 8) {
-                Chip(title: "Speak aloud", symbol: "speaker.wave.2", isOn: haunting.speaksAloud) { haunting.speaksAloud.toggle() }
-                Chip(title: haunting.restingUntil == nil ? "Rest 1 hr" : "Wake up", symbol: "moon.zzz", isOn: haunting.restingUntil != nil) {
+                Chip(title: "Give it a voice", symbol: "speaker.wave.2", isOn: haunting.speaksAloud) { haunting.speaksAloud.toggle() }
+                Chip(title: haunting.restingUntil == nil ? "Lay to rest" : "Raise it", symbol: "moon.zzz", isOn: haunting.restingUntil != nil) {
                     haunting.rest(for: haunting.restingUntil == nil ? 3600 : nil)
                 }
-                Chip(title: "At login", symbol: "sunrise", isOn: opensAtLogin) {
+                Chip(title: "Haunt at login", symbol: "sunrise", isOn: opensAtLogin) {
                     haunting.opensAtLogin.toggle()
                     opensAtLogin = haunting.opensAtLogin
                 }
             }
 
             HStack {
-                Label("Gemma, on this Mac only", systemImage: "lock")
+                Label("Bound to this Mac. Nothing leaves.", systemImage: "lock")
                     .font(.system(size: 11))
                     .foregroundStyle(Palette.faded)
                 Spacer()
@@ -238,9 +237,9 @@ private struct GlowButtonStyle: ButtonStyle {
             .foregroundStyle(Palette.night)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
-            .background(Capsule().fill(Palette.ghost.opacity(configuration.isPressed ? 0.75 : 1)))
+            .background(Rectangle().fill(Palette.ghost.opacity(configuration.isPressed ? 0.75 : 1)))
             .shadow(color: Palette.ghost.opacity(0.45), radius: 12)
-            .contentShape(Capsule())
+            .contentShape(Rectangle())
     }
 }
 
@@ -253,8 +252,8 @@ private struct SegmentStyle: ButtonStyle {
             .foregroundStyle(selected ? Palette.ghost : Palette.faded)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
-            .background(Capsule().fill(selected ? Palette.ghost.opacity(0.14) : .clear))
-            .contentShape(Capsule())
+            .background(Rectangle().fill(selected ? Palette.ghost.opacity(0.14) : .clear))
+            .contentShape(Rectangle())
     }
 }
 
@@ -273,8 +272,8 @@ private struct Chip: View {
             .foregroundStyle(isOn ? Palette.ghost : Palette.faded)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 9)
-            .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(isOn ? Palette.ghost.opacity(0.12) : Palette.surface))
-            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(isOn ? Palette.ghost.opacity(0.3) : Color.white.opacity(0.06)))
+            .background(Rectangle().fill(isOn ? Palette.ghost.opacity(0.12) : Palette.surface))
+            .overlay(Rectangle().strokeBorder(isOn ? Palette.ghost.opacity(0.3) : Color.white.opacity(0.06)))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
