@@ -2,8 +2,8 @@
 
 A ghost lives in your Mac's menu bar. It watches what you do and every so often it whispers about it.
 
-> **They just killed a process:** `pkill -x NoSuchGhostProcess`
-> *NoSuchGhostProcess is not dead, you silly creature. I am still here, watching you from behind the glass.*
+> **Seen:** Xcode has been the frontmost app for 3 hours 12 minutes.
+> **Whispered:** Three hours in Xcode. The previous owner stayed all night until their fingers bled.
 
 <p align="center"><img src="docs/screens/apparition.png" width="360" alt="A whisper appearing under the menu bar"><br><br><img src="docs/screens/panel.png" width="360" alt="The Poltergeist panel showing recent whispers"></p>
 
@@ -20,7 +20,7 @@ The whispers are written by **Gemma running locally through Ollama**. Your shell
 | Clock | still at the computer between midnight and 5 AM |
 | Downloads | another hundred files piling up in `~/Downloads` |
 
-The ghost picks the most interesting thing it saw since it last spoke. Dramatic omens interrupt the cooldown, while ordinary ones wait their turn. It never whispers to an empty room: if you've been idle for 5 minutes it stays quiet.
+The ghost picks the most interesting thing it saw since it last spoke, and each whisper gets a random mood (jealous, Victorian, lonely, counting, remembering the previous owner…) so it doesn't repeat itself. Dramatic omens interrupt the cooldown, while ordinary ones wait their turn. It never whispers to an empty room: if you've been idle for 5 minutes it stays quiet.
 
 Each whisper materializes under the menu bar, types itself out, lingers, and fades (click it to banish it sooner). The ghost icon flickers too.
 
