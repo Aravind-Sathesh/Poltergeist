@@ -7,9 +7,9 @@ enum OllamaError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .offline: "Gemma is asleep. Open the Ollama app to wake it."
-        case .modelMissing: "Gemma isn't downloaded. Run: ollama pull \(OllamaClient.model)"
-        case .badResponse: "Gemma mumbled something unreadable."
+        case .offline: "The medium has gone quiet. Open Ollama so it can speak."
+        case .modelMissing: "It has no voice yet. Run: ollama pull \(OllamaClient.model)"
+        case .badResponse: "It spoke, but only in tongues. It will try again."
         }
     }
 }
@@ -27,7 +27,7 @@ struct OllamaClient: Sendable {
             "stream": false,
             "think": false,
             "keep_alive": "5m",
-            "options": ["temperature": 0.9, "num_predict": 80],
+            "options": ["temperature": 1.0, "num_predict": 90],
         ]
         struct Reply: Decodable { struct Message: Decodable { let content: String }; let message: Message }
         let data = try await post("api/chat", body: body, timeout: 120)
