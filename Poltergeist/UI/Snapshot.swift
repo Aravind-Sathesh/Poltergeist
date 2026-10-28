@@ -21,10 +21,13 @@ enum Snapshot {
         ]
     }
 
-    /// Renders a view, or a window's whole frame when given its content view's superview, to a PNG.
+    /// Renders a view to a PNG at 2x, so the screenshots stay sharp on retina and in the cover.
     @MainActor
     static func write(_ view: NSView, to file: URL) {
-        guard let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { return }
+        let size = view.bounds.size
+        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width * 2), pixelsHigh: Int(size.height * 2), bitsPerSample: 8,
+                                         samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0) else { return }
+        rep.size = size
         view.cacheDisplay(in: view.bounds, to: rep)
         try? rep.representation(using: .png, properties: [:])?.write(to: file)
     }
