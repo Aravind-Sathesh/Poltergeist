@@ -1,7 +1,8 @@
 import AppKit
+import SwiftUI
 
-/// POLTERGEIST_SNAPSHOT=folder renders the open panel and an apparition to PNGs with made-up whispers, then quits.
-/// The app draws its own windows, so this needs no screen-recording permission.
+/// POLTERGEIST_SNAPSHOT=folder renders the panel and an apparition to PNGs with made-up whispers, then quits.
+/// SwiftUI renders them directly at 4x, so this needs no window and no screen-recording permission.
 enum Snapshot {
     static var folder: URL? {
         ProcessInfo.processInfo.environment["POLTERGEIST_SNAPSHOT"].map { URL(fileURLWithPath: $0, isDirectory: true) }
@@ -21,14 +22,19 @@ enum Snapshot {
         ]
     }
 
-    /// Renders a view to a PNG at 2x, so the screenshots stay sharp on retina and in the cover.
     @MainActor
-    static func write(_ view: NSView, to file: URL) {
-        let size = view.bounds.size
-        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width * 2), pixelsHigh: Int(size.height * 2), bitsPerSample: 8,
-                                         samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0) else { return }
-        rep.size = size
-        view.cacheDisplay(in: view.bounds, to: rep)
-        try? rep.representation(using: .png, properties: [:])?.write(to: file)
+    static func render(_ haunting: Haunting, to folder: URL) {
+        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        write(HauntView(haunting: haunting), to: folder.appending(path: "panel.png"))
+        write(ApparitionView(text: whispers[0].text, types: false) {}, to: folder.appending(path: "apparition.png"))
+    }
+
+    /// Renders at 4x so the screenshots stay sharp even scaled and tilted in the cover.
+    @MainActor
+    private static func write(_ view: some View, to file: URL) {
+        let renderer = ImageRenderer(content: view)
+        renderer.scale = 4
+        guard let image = renderer.cgImage else { return }
+        try? NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:])?.write(to: file)
     }
 }

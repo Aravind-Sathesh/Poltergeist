@@ -34,8 +34,6 @@ final class Apparition {
         }
     }
 
-    var contentView: NSView? { panel?.contentView }
-
     func dismiss(animated: Bool) {
         guard let panel else { return }
         self.panel = nil

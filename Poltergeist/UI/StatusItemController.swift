@@ -53,18 +53,4 @@ final class StatusItemController: NSObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.09 * Double(i)) { button.alphaValue = alpha }
         }
     }
-
-    /// Snapshot mode: writes the open panel and an apparition to `folder`, then quits.
-    func snapshot(to folder: URL) {
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            if let button = item.button { panel.show(below: button) }
-            apparition.show(Snapshot.whispers[0].text, under: nil, types: false)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                Snapshot.write(panel.contentView, to: folder.appending(path: "panel.png"))
-                if let view = apparition.contentView { Snapshot.write(view, to: folder.appending(path: "apparition.png")) }
-                NSApp.terminate(nil)
-            }
-        }
-    }
 }

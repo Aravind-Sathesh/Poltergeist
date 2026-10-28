@@ -22,7 +22,6 @@ final class HauntPanel {
     }
 
     var isOpen: Bool { panel.isVisible }
-    var contentView: NSView { host }
 
     func toggle(below button: NSStatusBarButton) {
         isOpen ? close() : show(below: button)
