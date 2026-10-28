@@ -1,32 +1,46 @@
 import AppKit
 
-/// The ghost in the menu bar. It flickers when it whispers; its menu keeps the last few things it said.
+/// The ghost in the menu bar. Clicking it opens the haunt panel; each new whisper makes it flicker and appear on screen.
 @MainActor
-final class StatusItemController: NSObject, NSMenuDelegate {
+final class StatusItemController: NSObject {
     private let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let haunting: Haunting
+    private let panel: HauntPanel
+    private let apparition = Apparition()
     private var shownWhisper: Whisper.ID?
 
     init(haunting: Haunting) {
         self.haunting = haunting
+        panel = HauntPanel(haunting: haunting)
         super.init()
         item.button?.image = GhostIcon.image
         item.button?.toolTip = "Poltergeist"
-        let menu = NSMenu()
-        menu.delegate = self
-        item.menu = menu
+        item.button?.target = self
+        item.button?.action = #selector(toggle)
         watchWhispers()
+    }
+
+    @objc private func toggle() {
+        guard let button = item.button else { return }
+        panel.toggle(below: button)
     }
 
     private func watchWhispers() {
         withObservationTracking {
             let newest = haunting.whispers.first
-            if let newest, newest.id != shownWhisper { flicker() }
+            if let newest, newest.id != shownWhisper {
+                flicker()
+                if !panel.isOpen, Snapshot.folder == nil { apparition.show(newest.text, under: item.button) }
+            }
             shownWhisper = newest?.id
-            item.button?.toolTip = newest?.text ?? "Poltergeist"
+            _ = haunting.errorMessage
+            _ = haunting.isWhispering
             item.button?.appearsDisabled = haunting.restingUntil != nil
         } onChange: { [weak self] in
-            Task { @MainActor in self?.watchWhispers() }
+            Task { @MainActor in
+                self?.watchWhispers()
+                self?.panel.refit()
+            }
         }
     }
 
@@ -39,113 +53,17 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         }
     }
 
-    /// Snapshot mode: writes the menu bar button and then the open menu to `folder`, then quits.
+    /// Snapshot mode: writes the open panel and an apparition to `folder`, then quits.
     func snapshot(to folder: URL) {
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            if let button = item.button { Snapshot.write(button, to: folder.appending(path: "icon.png")) }
-            item.menu?.appearance = Snapshot.appearance // menus follow the menu bar, not the app
-            let before = Set(NSApp.windows.map(ObjectIdentifier.init))
-            // The menu runs its own event loop, so the capture is scheduled in a mode that keeps firing while it's open.
-            let capture = Timer(timeInterval: 0.6, repeats: false) { [self] _ in
-                MainActor.assumeIsolated {
-                    for window in NSApp.windows where window.isVisible && !before.contains(ObjectIdentifier(window)) {
-                        if let frame = window.contentView?.superview { Snapshot.write(frame, to: folder.appending(path: "menu.png")) }
-                    }
-                    item.menu?.cancelTracking()
-                    DispatchQueue.main.async { NSApp.terminate(nil) }
-                }
-            }
-            RunLoop.main.add(capture, forMode: .common)
-            item.button?.performClick(nil)
-        }
-    }
-
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        menu.removeAllItems()
-        menu.addItem(NSMenuItem(title: statusLine, action: nil, keyEquivalent: ""))
-        if !haunting.whispers.isEmpty {
-            menu.addItem(.separator())
-            menu.addItem(.sectionHeader(title: "Recent Whispers"))
-            for whisper in haunting.whispers.prefix(5) {
-                let entry = action("") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(whisper.text, forType: .string) }
-                entry.attributedTitle = Self.title(for: whisper)
-                entry.toolTip = "Because: \(whisper.omen)\nClick to copy."
-                menu.addItem(entry)
+            if let button = item.button { panel.show(below: button) }
+            apparition.show(Snapshot.whispers[0].text, under: nil, types: false)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                Snapshot.write(panel.contentView, to: folder.appending(path: "panel.png"))
+                if let view = apparition.contentView { Snapshot.write(view, to: folder.appending(path: "apparition.png")) }
+                NSApp.terminate(nil)
             }
         }
-        menu.addItem(.separator())
-        let now = action("Whisper Now") { [haunting] in haunting.summon() }
-        now.isEnabled = !haunting.isWhispering
-        menu.addItem(now)
-
-        let levels = NSMenu()
-        for level in Haunting.Level.allCases {
-            let choice = action(level.title) { [haunting] in haunting.level = level }
-            choice.state = haunting.level == level ? .on : .off
-            levels.addItem(choice)
-        }
-        let levelItem = NSMenuItem(title: "Haunting", action: nil, keyEquivalent: "")
-        levelItem.submenu = levels
-        menu.addItem(levelItem)
-
-        let aloud = action("Speak Whispers Aloud") { [haunting] in haunting.speaksAloud.toggle() }
-        aloud.state = haunting.speaksAloud ? .on : .off
-        menu.addItem(aloud)
-        if haunting.restingUntil == nil {
-            menu.addItem(action("Rest for an Hour") { [haunting] in haunting.rest(for: 3600) })
-        } else {
-            menu.addItem(action("Wake the Ghost") { [haunting] in haunting.rest(for: nil) })
-        }
-        let login = action("Open at Login") { [haunting] in haunting.opensAtLogin.toggle() }
-        login.state = haunting.opensAtLogin ? .on : .off
-        menu.addItem(login)
-        menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Exorcise Poltergeist", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
-
-    private var statusLine: String {
-        if let error = haunting.errorMessage { return error }
-        if haunting.isWhispering { return "Whispering…" }
-        if let until = haunting.restingUntil { return "Resting until \(until.formatted(date: .omitted, time: .shortened))" }
-        return "Watching. Always watching."
-    }
-
-    /// The whisper in italics, wrapped into even lines, with how long ago it was said underneath.
-    private static func title(for whisper: Whisper) -> NSAttributedString {
-        let words = whisper.text.split(separator: " ")
-        let lineCount = max(1, Int((Double(whisper.text.count) / 46).rounded(.up)))
-        let width = whisper.text.count / lineCount + 4 // aim for equal lines so no word is stranded on its own
-        var lines: [String] = [""]
-        for word in words {
-            if !lines[lines.count - 1].isEmpty, lines[lines.count - 1].count + word.count + 1 > width, lines.count < lineCount {
-                lines.append("")
-            }
-            lines[lines.count - 1] += (lines[lines.count - 1].isEmpty ? "" : " ") + word
-        }
-        let italic = NSFontManager.shared.convert(NSFont.menuFont(ofSize: 0), toHaveTrait: .italicFontMask)
-        let title = NSMutableAttributedString(string: lines.joined(separator: "\n"), attributes: [.font: italic])
-        let ago = whisper.date.formatted(.relative(presentation: .named))
-        title.append(NSAttributedString(string: "\n\(ago)", attributes: [.font: NSFont.menuFont(ofSize: 11), .foregroundColor: NSColor.secondaryLabelColor]))
-        return title
-    }
-
-    private func action(_ title: String, _ run: @escaping () -> Void) -> NSMenuItem {
-        ClosureMenuItem(title: title, run: run)
-    }
-}
-
-/// A menu item that runs a closure, so the menu needs no selector per action.
-private final class ClosureMenuItem: NSMenuItem {
-    private let run: () -> Void
-
-    init(title: String, run: @escaping () -> Void) {
-        self.run = run
-        super.init(title: title, action: #selector(fire), keyEquivalent: "")
-        target = self
-    }
-
-    required init(coder: NSCoder) { fatalError("not used") }
-
-    @objc private func fire() { run() }
 }

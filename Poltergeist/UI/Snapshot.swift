@@ -1,19 +1,10 @@
 import AppKit
 
-/// POLTERGEIST_SNAPSHOT=folder renders the menu bar ghost and its open menu to PNGs with made-up whispers, then quits.
+/// POLTERGEIST_SNAPSHOT=folder renders the open panel and an apparition to PNGs with made-up whispers, then quits.
 /// The app draws its own windows, so this needs no screen-recording permission.
-/// POLTERGEIST_APPEARANCE=light or dark overrides the system appearance.
 enum Snapshot {
     static var folder: URL? {
         ProcessInfo.processInfo.environment["POLTERGEIST_SNAPSHOT"].map { URL(fileURLWithPath: $0, isDirectory: true) }
-    }
-
-    static var appearance: NSAppearance? {
-        switch ProcessInfo.processInfo.environment["POLTERGEIST_APPEARANCE"] {
-        case "light": NSAppearance(named: .aqua)
-        case "dark": NSAppearance(named: .darkAqua)
-        default: nil
-        }
     }
 
     static var whispers: [Whisper] {
