@@ -8,6 +8,12 @@ struct Whisper: Identifiable, Equatable {
     let text: String
     let omen: String
     var date = Date()
+
+    /// The shell command that prompted it, if any: shell omens read "They just ran: <command>".
+    var command: String? {
+        guard omen.hasPrefix("They "), let colon = omen.range(of: ": ") else { return nil }
+        return "$ " + omen[colon.upperBound...]
+    }
 }
 
 /// Gathers omens from the senses and decides when the ghost speaks.
@@ -25,11 +31,13 @@ final class Haunting {
             }
         }
 
-        var title: String {
+        var name: String { rawValue.capitalized }
+
+        var cadence: String {
             switch self {
-            case .faint: "Faint: every 30 minutes or so"
-            case .restless: "Restless: every 10 minutes"
-            case .possessed: "Possessed: every 2 minutes"
+            case .faint: "about every 30 minutes"
+            case .restless: "about every 10 minutes"
+            case .possessed: "every couple of minutes"
             }
         }
     }
@@ -63,7 +71,6 @@ final class Haunting {
         lastWhisper = Date().addingTimeInterval(-level.interval + 60) // first whisper about a minute after launch
         senses.onOmen = { [weak self] in self?.receive($0) }
         senses.start()
-        voice.start()
         timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.considerSpeaking() }
         }
@@ -115,7 +122,6 @@ final class Haunting {
             #if DEBUG
             FileHandle.standardError.write(Data("[\(omen.weight)] \(omen.detail)\n  -> \(text)\n".utf8))
             #endif
-            voice.post(text)
             if speaksAloud { voice.speak(text) }
         } catch {
             errorMessage = error.localizedDescription
