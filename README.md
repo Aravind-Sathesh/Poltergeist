@@ -5,7 +5,7 @@ A ghost lives in your Mac's menu bar. It watches what you do and every so often 
 > **They just killed a process:** `pkill -x NoSuchGhostProcess`
 > *NoSuchGhostProcess is not dead, you silly creature. I am still here, watching you from behind the glass.*
 
-<p align="center"><img src="docs/screens/menu-dark.png" width="360" alt="The Poltergeist menu showing recent whispers"></p>
+<p align="center"><img src="docs/screens/apparition.png" width="360" alt="A whisper appearing under the menu bar"><br><br><img src="docs/screens/panel.png" width="360" alt="The Poltergeist panel showing recent whispers"></p>
 
 The whispers are written by **Gemma running locally through Ollama**. Your shell history, your apps and your habits never leave your Mac.
 
@@ -22,12 +22,15 @@ The whispers are written by **Gemma running locally through Ollama**. Your shell
 
 The ghost picks the most interesting thing it saw since it last spoke. Dramatic omens interrupt the cooldown, while ordinary ones wait their turn. It never whispers to an empty room: if you've been idle for 5 minutes it stays quiet.
 
-From the menu you can:
+Each whisper materializes under the menu bar, types itself out, lingers, and fades (click it to banish it sooner). The ghost icon flickers too.
+
+Click the ghost to open its panel:
+- the last three whispers, fading with age, each with the command or moment that prompted it (click to copy)
 - **Whisper Now:** summon it
-- **Haunting:** Faint (about every 30 min), Restless (every 10 min) or Possessed (every 2 min)
-- **Speak Whispers Aloud:** uses macOS's own *Whisper* voice. Best with headphones, late at night.
-- **Rest for an Hour:** for screen sharing
-- the last five whispers (hover to see what prompted one, click to copy it)
+- **Faint / Restless / Possessed:** about every 30 minutes, every 10, or every couple of minutes
+- **Speak aloud:** uses macOS's own *Whisper* voice. Best with headphones, late at night.
+- **Rest 1 hr:** for screen sharing
+- **At login:** start with your Mac
 
 ## Privacy
 
@@ -51,7 +54,7 @@ open build/dd/Build/Products/Debug/Poltergeist.app
 
 Tests: `xcodebuild -project Poltergeist.xcodeproj -scheme Poltergeist -derivedDataPath build/dd test`
 
-macOS asks for notification permission at first launch, and for Downloads access the first time the ghost counts your files.
+macOS asks for Downloads access the first time the ghost counts your files. Nothing else needs permission.
 
 ## Why Gemma 12b
 
@@ -60,9 +63,9 @@ macOS asks for notification permission at first launch, and for Downloads access
 ## Layout
 
 - `Core/`: pure logic: history parsing, redaction, omen ranking, the prompt (unit tested)
-- `Edges/`: the senses, Ollama, notifications and voice
+- `Edges/`: the senses, Ollama and the voice
 - `App/`: when the ghost speaks
-- `UI/`: the menu bar ghost (drawn in code) and its menu
+- `UI/`: the menu bar ghost (drawn in code), its panel and the apparitions
 - `scripts/gen-icon/`: regenerates the app icon from the same ghost drawing
 
-Screenshots: `POLTERGEIST_SNAPSHOT=docs/screens POLTERGEIST_APPEARANCE=dark build/dd/Build/Products/Debug/Poltergeist.app/Contents/MacOS/Poltergeist` renders the open menu with made-up whispers. It needs no screen-recording permission.
+Screenshots: `POLTERGEIST_SNAPSHOT=docs/screens build/dd/Build/Products/Debug/Poltergeist.app/Contents/MacOS/Poltergeist` renders the panel and an apparition with made-up whispers. It needs no screen-recording permission.
