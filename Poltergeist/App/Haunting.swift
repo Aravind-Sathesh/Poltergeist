@@ -7,7 +7,7 @@ struct Whisper: Identifiable, Equatable {
     let id = UUID()
     let text: String
     let omen: String
-    let date = Date()
+    var date = Date()
 }
 
 /// Gathers omens from the senses and decides when the ghost speaks.
@@ -67,6 +67,11 @@ final class Haunting {
         timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.considerSpeaking() }
         }
+    }
+
+    /// Snapshot mode only: shows made-up whispers instead of watching anything.
+    func haunt(with whispers: [Whisper]) {
+        self.whispers = whispers
     }
 
     func rest(for interval: TimeInterval?) {
