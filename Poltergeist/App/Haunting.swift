@@ -107,6 +107,9 @@ final class Haunting {
             lastWhisper = Date()
             whispers.insert(Whisper(text: text, omen: omen.detail), at: 0)
             if whispers.count > 20 { whispers.removeLast() }
+            #if DEBUG
+            FileHandle.standardError.write(Data("[\(omen.weight)] \(omen.detail)\n  -> \(text)\n".utf8))
+            #endif
             voice.post(text)
             if speaksAloud { voice.speak(text) }
         } catch {
