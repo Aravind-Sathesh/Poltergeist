@@ -70,7 +70,8 @@ struct HauntView: View {
         }
         .frame(width: 360)
         .background(Palette.background)
-        .overlay(Rectangle().strokeBorder(Palette.ghost.opacity(0.14)))
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(Palette.ghost.opacity(0.14)))
         .environment(\.colorScheme, .dark)
         .onAppear { opensAtLogin = haunting.opensAtLogin }
     }
@@ -154,8 +155,8 @@ struct HauntView: View {
                     }
                 }
                 .padding(3)
-                .background(Rectangle().fill(Palette.surface))
-                .overlay(Rectangle().strokeBorder(Color.white.opacity(0.06)))
+                .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(Palette.surface))
+                .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(Color.white.opacity(0.06)))
                 Text("It stirs \(haunting.level.cadence)")
                     .font(.system(size: 11))
                     .foregroundStyle(Palette.faded)
@@ -237,7 +238,7 @@ private struct GlowButtonStyle: ButtonStyle {
             .foregroundStyle(Palette.night)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
-            .background(Rectangle().fill(Palette.ghost.opacity(configuration.isPressed ? 0.75 : 1)))
+            .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(Palette.ghost.opacity(configuration.isPressed ? 0.75 : 1)))
             .shadow(color: Palette.ghost.opacity(0.45), radius: 12)
             .contentShape(Rectangle())
     }
@@ -252,7 +253,7 @@ private struct SegmentStyle: ButtonStyle {
             .foregroundStyle(selected ? Palette.ghost : Palette.faded)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
-            .background(Rectangle().fill(selected ? Palette.ghost.opacity(0.14) : .clear))
+            .background(RoundedRectangle(cornerRadius: 3, style: .continuous).fill(selected ? Palette.ghost.opacity(0.14) : .clear))
             .contentShape(Rectangle())
     }
 }
@@ -272,8 +273,8 @@ private struct Chip: View {
             .foregroundStyle(isOn ? Palette.ghost : Palette.faded)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 9)
-            .background(Rectangle().fill(isOn ? Palette.ghost.opacity(0.12) : Palette.surface))
-            .overlay(Rectangle().strokeBorder(isOn ? Palette.ghost.opacity(0.3) : Color.white.opacity(0.06)))
+            .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(isOn ? Palette.ghost.opacity(0.12) : Palette.surface))
+            .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(isOn ? Palette.ghost.opacity(0.3) : Color.white.opacity(0.06)))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
