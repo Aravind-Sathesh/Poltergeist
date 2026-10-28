@@ -5,6 +5,8 @@ A ghost lives in your Mac's menu bar. It watches what you do and every so often 
 > **They just killed a process:** `pkill -x NoSuchGhostProcess`
 > *NoSuchGhostProcess is not dead, you silly creature. I am still here, watching you from behind the glass.*
 
+<p align="center"><img src="docs/screens/menu-dark.png" width="360" alt="The Poltergeist menu showing recent whispers"></p>
+
 The whispers are written by **Gemma running locally through Ollama**. Your shell history, your apps and your habits never leave your Mac.
 
 ## What it notices
@@ -62,3 +64,5 @@ macOS asks for notification permission at first launch, and for Downloads access
 - `App/`: when the ghost speaks
 - `UI/`: the menu bar ghost (drawn in code) and its menu
 - `scripts/gen-icon/`: regenerates the app icon from the same ghost drawing
+
+Screenshots: `POLTERGEIST_SNAPSHOT=docs/screens POLTERGEIST_APPEARANCE=dark build/dd/Build/Products/Debug/Poltergeist.app/Contents/MacOS/Poltergeist` renders the open menu with made-up whispers. It needs no screen-recording permission.
