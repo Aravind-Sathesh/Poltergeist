@@ -39,11 +39,34 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         }
     }
 
+    /// Snapshot mode: writes the menu bar button and then the open menu to `folder`, then quits.
+    func snapshot(to folder: URL) {
+        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            if let button = item.button { Snapshot.write(button, to: folder.appending(path: "icon.png")) }
+            item.menu?.appearance = Snapshot.appearance // menus follow the menu bar, not the app
+            let before = Set(NSApp.windows.map(ObjectIdentifier.init))
+            // The menu runs its own event loop, so the capture is scheduled in a mode that keeps firing while it's open.
+            let capture = Timer(timeInterval: 0.6, repeats: false) { [self] _ in
+                MainActor.assumeIsolated {
+                    for window in NSApp.windows where window.isVisible && !before.contains(ObjectIdentifier(window)) {
+                        if let frame = window.contentView?.superview { Snapshot.write(frame, to: folder.appending(path: "menu.png")) }
+                    }
+                    item.menu?.cancelTracking()
+                    DispatchQueue.main.async { NSApp.terminate(nil) }
+                }
+            }
+            RunLoop.main.add(capture, forMode: .common)
+            item.button?.performClick(nil)
+        }
+    }
+
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
         menu.addItem(NSMenuItem(title: statusLine, action: nil, keyEquivalent: ""))
         if !haunting.whispers.isEmpty {
             menu.addItem(.separator())
+            menu.addItem(.sectionHeader(title: "Recent Whispers"))
             for whisper in haunting.whispers.prefix(5) {
                 let entry = action("") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(whisper.text, forType: .string) }
                 entry.attributedTitle = Self.title(for: whisper)
@@ -88,14 +111,20 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         return "Watching. Always watching."
     }
 
-    /// The whisper wrapped to a readable width, with how long ago it was said underneath.
+    /// The whisper in italics, wrapped into even lines, with how long ago it was said underneath.
     private static func title(for whisper: Whisper) -> NSAttributedString {
+        let words = whisper.text.split(separator: " ")
+        let lineCount = max(1, Int((Double(whisper.text.count) / 46).rounded(.up)))
+        let width = whisper.text.count / lineCount + 4 // aim for equal lines so no word is stranded on its own
         var lines: [String] = [""]
-        for word in whisper.text.split(separator: " ") {
-            if lines[lines.count - 1].count + word.count > 46 { lines.append("") }
+        for word in words {
+            if !lines[lines.count - 1].isEmpty, lines[lines.count - 1].count + word.count + 1 > width, lines.count < lineCount {
+                lines.append("")
+            }
             lines[lines.count - 1] += (lines[lines.count - 1].isEmpty ? "" : " ") + word
         }
-        let title = NSMutableAttributedString(string: lines.joined(separator: "\n"), attributes: [.font: NSFont.menuFont(ofSize: 0)])
+        let italic = NSFontManager.shared.convert(NSFont.menuFont(ofSize: 0), toHaveTrait: .italicFontMask)
+        let title = NSMutableAttributedString(string: lines.joined(separator: "\n"), attributes: [.font: italic])
         let ago = whisper.date.formatted(.relative(presentation: .named))
         title.append(NSAttributedString(string: "\n\(ago)", attributes: [.font: NSFont.menuFont(ofSize: 11), .foregroundColor: NSColor.secondaryLabelColor]))
         return title
